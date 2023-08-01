@@ -1,5 +1,5 @@
 ---
-name: 🌈 Feature request
+name: Feature request
 about: Suggest an amazing new idea for this project
 title: ''
 labels: enhancement

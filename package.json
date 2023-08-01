@@ -1,7 +1,7 @@
 {
-  "name": "typescript-npm-package-template",
-  "version": "0.0.0-development",
-  "description": "A template for creating npm packages using TypeScript and VSCode",
+  "name": "fflt",
+  "version": "0.0.1",
+  "description": "Format, fix, lint, and typecheck.",
   "main": "./lib/index.js",
   "files": [
     "lib/**/*"
@@ -19,32 +19,28 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ryansonshine/typescript-npm-package-template.git"
+    "url": "git+https://github.com/vantaboard/fflt.git"
   },
   "license": "MIT",
   "author": {
-    "name": "Ryan Sonshine",
-    "email": "ryansonshine@users.noreply.github.com",
-    "url": "https://github.com/ryansonshine"
+    "name": "Brighten Tompkins",
+    "email": "brightenqtompkins@gmail.com",
+    "url": "https://github.com/vantaboard"
   },
   "engines": {
     "node": ">=12.0"
   },
   "keywords": [
-    "boilerplate",
-    "template",
-    "typescript",
-    "vscode",
-    "jest",
-    "husky",
-    "commitizen",
-    "semantic-release",
-    "codecov"
+      "helper",
+      "formatting",
+      "fixing",
+      "linting",
+      "typechecking"
   ],
   "bugs": {
-    "url": "https://github.com/ryansonshine/typescript-npm-package-template/issues"
+    "url": "https://github.com/vantaboard/fflt/issues"
   },
-  "homepage": "https://github.com/ryansonshine/typescript-npm-package-template#readme",
+  "homepage": "https://github.com/vantaboard/fflt#readme",
   "devDependencies": {
     "@ryansonshine/commitizen": "^4.2.8",
     "@ryansonshine/cz-conventional-changelog": "^3.3.4",
@@ -66,32 +62,11 @@
     "ts-node": "^10.2.1",
     "typescript": "^4.2.4"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/@ryansonshine/cz-conventional-changelog"
-    }
-  },
-  "lint-staged": {
-    "*.ts": "eslint --cache --cache-location .eslintcache --fix"
-  },
   "release": {
     "branches": [
       "main"
     ],
     "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "preset": "conventionalcommits",
-          "releaseRules": [
-            {
-              "type": "build",
-              "scope": "deps",
-              "release": "patch"
-            }
-          ]
-        }
-      ],
       [
         "@semantic-release/release-notes-generator",
         {

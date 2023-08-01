@@ -1,5 +1,5 @@
 <!--
-  😀 Wonderful!  Thank you for opening a pull request.
+  Wonderful!  Thank you for opening a pull request.
 
   Please fill in the information below to expedite the review
   and (hopefully) merge of your change.
