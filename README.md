@@ -59,7 +59,7 @@ Lorem ipsum.
 [issues-url]:https://github.com/vantaboard/fflt/issues
 [codecov-img]:https://codecov.io/gh/vantaboard/fflt/branch/main/graph/badge.svg
 [codecov-url]:https://codecov.io/gh/vantaboard/fflt
-[ryansonshine-img]:https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+[semantic-release-img]:https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-url]:https://github.com/semantic-release/semantic-release
 [ryansonshine-img]:https://img.shields.io/badge/%F0%9F%A7%91-Template%20Used-blue
 [ryansonshine-url]:https://github.com/ryansonshine/typescript-npm-package-template
