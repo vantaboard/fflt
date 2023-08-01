@@ -8,8 +8,9 @@
     "bin/**/*"
   ],
   "bin": {
-    "fflt": "./lib/cli.js"
+    "fflt": "./bin/index.js"
   },
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
@@ -33,7 +34,7 @@
     "url": "https://github.com/vantaboard"
   },
   "engines": {
-    "node": ">=12.0"
+    "node": ">=16.0"
   },
   "keywords": [
     "helper",
@@ -48,9 +49,8 @@
   "homepage": "https://github.com/vantaboard/fflt#readme",
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
-    "@types/inquirer": "^9.0.3",
     "@types/jest": "^27.5.2",
-    "@types/node": "^12.20.11",
+    "@types/node": "^20.4.5",
     "@types/root-check": "^1.0.0",
     "@types/tabtab": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
@@ -99,15 +99,23 @@
     ]
   },
   "dependencies": {
+    "@inquirer/core": "^3.1.0",
+    "@inquirer/prompts": "^3.0.1",
+    "@inquirer/type": "^1.1.1",
+    "ansi-escapes": "^6.2.0",
     "chalk": "^5.3.0",
     "commander": "^11.0.0",
+    "cosmiconfig": "^8.2.0",
     "cross-spawn": "^7.0.3",
-    "inquirer": "^9.2.9",
+    "figures": "^5.0.0",
+    "find-up": "^6.3.0",
+    "fzf": "^0.5.2",
     "meow": "^12.0.1",
     "npm-keyword": "^7.0.0",
     "open": "^9.1.0",
     "read-pkg-up": "^10.0.0",
     "root-check": "^2.0.0",
-    "tabtab": "^3.0.2"
+    "tabtab": "^3.0.2",
+    "yaml": "^2.3.1"
   }
 }
