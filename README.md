@@ -11,7 +11,7 @@
 [![Semantic Release][semantic-release-img]][semantic-release-url]
 [![Template Used][ryansonshine-img]][ryansonshine-url]
 
-> My awesome module
+> Format, fix, lint, and typecheck.
 
 ## Install
 
