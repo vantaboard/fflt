@@ -250,11 +250,11 @@ async function handleInit() {
             })),
         }));
 
-    const includeCached =
-        confirmConfig &&
-        (await confirm({
+    const includeCached = confirmConfig
+        ? await confirm({
             message: 'Do you want to include staged files?',
-        }));
+        })
+        : undefined;
 
     const scripts =
         confirmConfig &&
@@ -269,6 +269,11 @@ async function handleInit() {
                 })
             ),
         }));
+
+    config.package_manager = packageManager || config.package_manager;
+    config.default_branch = defaultBranch || config.default_branch;
+    config.include_cached = includeCached ?? config.include_cached;
+    config.scripts = scripts || config.scripts;
 
     switch (configFileType) {
         case 'json':
@@ -291,7 +296,7 @@ async function handleInit() {
     }
 }
 
-const fftl = async (arg: string, flags: typeof cli.flags) => {
+const fftl = async (arg: string) => {
     if (!arg) {
         return;
     }
@@ -302,5 +307,5 @@ const fftl = async (arg: string, flags: typeof cli.flags) => {
 };
 
 void (async () => {
-    await fftl(cli.input[0], cli.flags);
+    await fftl(cli.input[0]);
 })();
