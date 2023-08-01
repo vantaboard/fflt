@@ -2,18 +2,24 @@
   "name": "fflt",
   "version": "0.0.1",
   "description": "Format, fix, lint, and typecheck.",
-  "main": "./lib/cli.js",
   "files": [
-    "lib/**/*"
+    "!lib/__tests__/**/*",
+    "lib/**/*",
+    "bin/**/*"
   ],
+  "bin": {
+    "fflt": "./lib/cli.js"
+  },
   "scripts": {
-    "build": "tsc --project tsconfig.build.json",
-    "build:watch": "tsc --project tsconfig.build.json --watch",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "clean": "rm -rf ./lib/",
+    "cm": "cz",
     "lint": "eslint ./src/ --fix",
+    "start": "TS_NODE_FILES=true ts-node ./src/cli.ts",
     "semantic-release": "semantic-release",
     "test:watch": "jest --watch",
-    "test": "jest --coverage",
+    "test": "jest",
     "typecheck": "tsc --noEmit"
   },
   "repository": {
@@ -41,8 +47,12 @@
   },
   "homepage": "https://github.com/vantaboard/fflt#readme",
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.2",
+    "@types/inquirer": "^9.0.3",
     "@types/jest": "^27.5.2",
     "@types/node": "^12.20.11",
+    "@types/root-check": "^1.0.0",
+    "@types/tabtab": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.25.0",
@@ -54,20 +64,7 @@
     "semantic-release": "^21.0.1",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
-    "typescript": "^4.2.4",
-    "@types/cross-spawn": "^6.0.2",
-    "@types/inquirer": "^9.0.3",
-    "@types/root-check": "^1.0.0",
-    "@types/tabtab": "^3.0.2",
-    "chalk": "^5.3.0",
-    "cross-spawn": "^7.0.3",
-    "inquirer": "^9.2.9",
-    "meow": "^12.0.1",
-    "npm-keyword": "^7.0.0",
-    "open": "^9.1.0",
-    "read-pkg-up": "^10.0.0",
-    "root-check": "^2.0.0",
-    "tabtab": "^3.0.2"
+    "typescript": "^4.2.4"
   },
   "release": {
     "branches": [
@@ -100,5 +97,17 @@
       "@semantic-release/npm",
       "@semantic-release/github"
     ]
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^11.0.0",
+    "cross-spawn": "^7.0.3",
+    "inquirer": "^9.2.9",
+    "meow": "^12.0.1",
+    "npm-keyword": "^7.0.0",
+    "open": "^9.1.0",
+    "read-pkg-up": "^10.0.0",
+    "root-check": "^2.0.0",
+    "tabtab": "^3.0.2"
   }
 }
