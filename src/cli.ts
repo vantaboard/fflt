@@ -187,31 +187,6 @@ function writeConfig(
     );
 }
 
-function getBranches() {
-    const branches = spawn.sync('git', ['branch', '-a'], {
-        encoding: 'utf8',
-    }).stdout;
-
-    const cleanBranches = branches.replace(
-        /^[\\+\s\\*]\s(remotes\/.+\/)?/gm,
-        ''
-    );
-
-    const uniqBranches = [...new Set(cleanBranches.split('\n'))].filter(
-        branch => branch !== ''
-    );
-    const mainBranches = uniqBranches.filter(branch =>
-        ['master', 'main', 'root', 'primary'].includes(branch)
-    );
-    const sortedBranches = uniqBranches
-        .filter(
-            branch => !['master', 'main', 'root', 'primary'].includes(branch)
-        )
-        .sort((a, b) => a.localeCompare(b));
-
-    return [...mainBranches, ...sortedBranches];
-}
-
 async function handleInit() {
     if (!root) {
         throw errors.missingroot;
