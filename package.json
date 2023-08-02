@@ -34,7 +34,7 @@
         "url": "https://github.com/vantaboard"
     },
     "engines": {
-        "node": ">=16.0"
+        "node": ">=18.0"
     },
     "keywords": [
         "helper",
