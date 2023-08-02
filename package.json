@@ -1,6 +1,6 @@
 {
     "name": "fflt",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Format, fix, lint, and typecheck.",
     "files": [
         "!lib/__tests__/**/*",

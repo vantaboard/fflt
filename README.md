@@ -13,41 +13,37 @@
 
 > Format, fix, lint, and typecheck.
 
+More features on the way! This is a tool to format, fix, lint, and typecheck only the files that you have touched when diff'd against another branch.
+
 ## Install
 
-```bash
-npm install fflt
+```sh
+npm install -D fflt
+```
+
+```sh
+yarn add -D fflt
 ```
 
 ## Usage
 
-```ts
-import { myPackage } from 'fflt';
+```sh
+Usage
+  - Create a config file
+    fflt init
 
-myPackage('hello');
-//=> 'hello from my package'
+  - Runs a command using fflt
+    fflt command <command>
+
+Options
+  --version, -v  Show version
+  --cached,  -c  Include cached files
+  --default, -d  Use default branch
+  --branch,  -b  Name of branch to use
+  --root,    -r  Use git root
+  --ignore,  -i  Ignore pattern (regex)
+  --verbose, -v  Verbose output
 ```
-
-## API
-
-### myPackage(input, options?)
-
-#### input
-
-Type: `string`
-
-Lorem ipsum.
-
-#### options
-
-Type: `object`
-
-##### postfix
-
-Type: `string`
-Default: `rainbows`
-
-Lorem ipsum.
 
 [build-img]:https://github.com/vantaboard/fflt/actions/workflows/release.yml/badge.svg
 [build-url]:https://github.com/vantaboard/fflt/actions/workflows/release.yml
