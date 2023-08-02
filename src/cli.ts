@@ -331,6 +331,99 @@ const fftl = async (flags: typeof cli.flags, ...args: string[]) => {
     if (args[0] === 'init') {
         await handleInit();
     }
+
+    if (args[0] === 'command') {
+        let command = args[1];
+        if (!config.commands.includes(command)) {
+            command = await select({
+                message: 'Which command do you want to run?',
+                choices: config.commands.map(command => {
+                    return {
+                        name: command,
+                        value: command,
+                        description: `Run ${command}`,
+                    };
+                }),
+            });
+        }
+
+        const subcommands = commandMap[command];
+
+        let subcommand = args[2] ?? subcommands[0].name;
+
+        if (!args[2] && subcommands.length > 1) {
+            subcommand = await select({
+                message: 'Which subcommand do you want to run?',
+                choices: subcommands.map(command => {
+                    const { name, description } = command;
+
+                    return {
+                        name,
+                        value: name,
+                        description,
+                    };
+                }),
+            });
+        }
+
+        const subcommandRunner = [...subcommands].find(
+            command => command.name === subcommand
+        );
+
+        if (!subcommandRunner) {
+            throw errors.subcommand(subcommand);
+        }
+
+        let branch = config.default_branch;
+
+        if (flags.branch) {
+            branch = flags.branch;
+        }
+
+        const branches = getBranches();
+        const initialBranchChoice = branches.includes(config.default_branch)
+            ? [
+                  {
+                      name: config.default_branch,
+                      value: config.default_branch,
+                      color: 'green',
+                  } as SelectChoice<string>,
+              ]
+            : [];
+
+        if (!flags.default) {
+            branch = await select({
+                message: 'Which branch do you want to run against?',
+                choices: branches
+                    .filter(branch => branch !== config.default_branch)
+                    .reduce((acc, branch) => {
+                        acc.push({
+                            name: branch,
+                            value: branch,
+                            description: `Run ${subcommand} against ${branch}`,
+                        });
+
+                        return acc;
+                    }, initialBranchChoice),
+            });
+        }
+
+        const files = getDiffFiles({
+            branch,
+            includeCached: flags.cached,
+            ignorePattern: config.ignore_pattern,
+            fromRoot: flags.root,
+        });
+
+        if (!files.length) {
+            process.stdout.write(
+                chalk.yellow(`No files to run ${chalk.magenta(command)} on.`)
+            );
+            return;
+        }
+
+        process.stdout.write(subcommandRunner.run(files).stdout);
+    }
 };
 
 void (async () => {
