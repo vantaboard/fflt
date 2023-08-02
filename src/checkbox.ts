@@ -171,16 +171,11 @@ export const checkbox = createPrompt(
 
         useKeypress((key, rl) => {
             if (isSpaceKey(key) && !finding) {
-                try {
-                    setChecked(
-                        checked.map((c, i) =>
-                            i === filteredChoices[cursorPosition].index ? !c : c
-                        )
-                    );
-                } catch (e) {
-                    console.log({ filteredChoices, cursorPosition, checked });
-                    throw e;
-                }
+                setChecked(
+                    checked.map((c, i) =>
+                        i === filteredChoices[cursorPosition].index ? !c : c
+                    )
+                );
 
                 return;
             }
