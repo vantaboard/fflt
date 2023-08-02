@@ -14,8 +14,14 @@ const pkgJson = readPackageUpSync({
     cwd: process.cwd(),
 })?.packageJson;
 
-if (spawn.sync('git', ['--version']).error) {
-    throw new Error('Git is not installed');
+function isValidIgnorePattern(pattern: string): boolean {
+    const regex = new RegExp(
+        `(^\\/)|((\\/(([gmiyvsdu]?)${Array.from({ length: 7 })
+            .map((_, i) => `((?!\\${i * 2 + 5})([gmiyvsdu]?))?`)
+            .join('')})?)$)`,
+        'g'
+    );
+    return !regex.test(pattern);
 }
 
 const explorer = cosmiconfigSync('fflt');
@@ -34,7 +40,7 @@ const defaultConfig = {
     commands: ['eslint', 'prettier', 'tsc'],
     scripts: ['lint', 'fix', 'format', 'tsc', 'typecheck'],
     default_branch: 'main',
-    ignore_pattern: '/yarn.lock|package-lock.json/',
+    ignore_pattern: 'yarn\\.lock|package-lock\\.json',
     include_cached: true,
     package_manager: 'npm',
 } satisfies FFLTConfig;
@@ -328,6 +334,10 @@ const fftl = async (flags: typeof cli.flags, ...args: string[]) => {
     if (!args.length) {
         process.stdout.write(cli.showHelp());
         return;
+    }
+
+    if (!isValidIgnorePattern(flags.ignore)) {
+        throw errors.ignore(flags.ignore);
     }
 
     if (arg === 'init') {
