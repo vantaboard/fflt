@@ -31,14 +31,20 @@ type ErrorArgs<T extends keyof Errors> = Error<T> extends (
     ? A[number]
     : never;
 
+export class ErrorLogger {
+    static log = (err: string): void => {
+        console.log(err);
+    };
+}
+
 export const error = <T extends keyof Errors>(
     ...args: ErrorArgs<T> extends never ? [T] : [T, ErrorArgs<T>]
 ): void => {
     const err = errors[args[0]];
 
     if (typeof err === 'function' && Array.isArray(args)) {
-        console.log(err(args as any));
+        ErrorLogger.log(err(args as any));
     }
 
-    console.log(err);
+    ErrorLogger.log(err as any);
 };

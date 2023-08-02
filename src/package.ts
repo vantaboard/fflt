@@ -1,6 +1,6 @@
 import { readPackageUpSync } from 'read-pkg-up';
 import { findUpSync } from 'find-up';
-import { error } from './errors';
+import { error } from './errors.js';
 
 export const root = findUpSync('package.json') ?? '';
 

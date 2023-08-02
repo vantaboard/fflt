@@ -1,5 +1,5 @@
 import meow from 'meow';
-import { error } from './errors.js';
+import { error, ErrorLogger } from './errors.js';
 import { config, handleCreateConfig } from './config.js';
 import { handleCommands } from './commands.js';
 
@@ -25,6 +25,7 @@ const cli = meow(
       --branch, -b   Name of branch to use
       --root, -r     Use git root
       --ignore, -i   Ignore pattern (regex)
+      --verbose, -v  Verbose output
 `,
     {
         importMeta: import.meta,
@@ -51,6 +52,9 @@ const cli = meow(
                 shortFlag: 'i',
                 default: config.ignore_pattern,
             },
+            verbose: {
+                type: 'boolean',
+            },
         },
     }
 );
@@ -68,6 +72,12 @@ const fftl = async (flags: typeof cli.flags, ...args: string[]) => {
 };
 
 void (async () => {
+    if (cli.flags.verbose) {
+        ErrorLogger.log = (err: string): void => {
+            throw new Error(err);
+        };
+    }
+
     if (!cli.input.length) {
         console.log(cli.showHelp());
         return 0;
