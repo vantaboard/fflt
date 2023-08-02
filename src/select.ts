@@ -8,7 +8,6 @@ import {
     isEnterKey,
     isUpKey,
     isDownKey,
-    isNumberKey,
     Separator,
     AsyncPromptConfig,
 } from '@inquirer/core';
