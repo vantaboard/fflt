@@ -1,122 +1,127 @@
 {
-  "name": "fflt",
-  "version": "0.0.1",
-  "description": "Format, fix, lint, and typecheck.",
-  "files": [
-    "!lib/__tests__/**/*",
-    "lib/**/*",
-    "bin/**/*"
-  ],
-  "bin": {
-    "fflt": "./bin/index.js"
-  },
-  "type": "module",
-  "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "clean": "rm -rf ./lib/",
-    "cm": "cz",
-    "lint": "eslint ./src/ --fix",
-    "start": "TS_NODE_FILES=true ts-node ./src/cli.ts",
-    "semantic-release": "semantic-release",
-    "test:watch": "jest --watch",
-    "test": "jest",
-    "typecheck": "tsc --noEmit"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vantaboard/fflt.git"
-  },
-  "license": "MIT",
-  "author": {
-    "name": "Brighten Tompkins",
-    "email": "brightenqtompkins@gmail.com",
-    "url": "https://github.com/vantaboard"
-  },
-  "engines": {
-    "node": ">=16.0"
-  },
-  "keywords": [
-    "helper",
-    "formatting",
-    "fixing",
-    "linting",
-    "typechecking"
-  ],
-  "bugs": {
-    "url": "https://github.com/vantaboard/fflt/issues"
-  },
-  "homepage": "https://github.com/vantaboard/fflt#readme",
-  "devDependencies": {
-    "@types/cross-spawn": "^6.0.2",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^20.4.5",
-    "@types/root-check": "^1.0.0",
-    "@types/tabtab": "^3.0.2",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
-    "eslint": "^7.25.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "jest": "^27.2.0",
-    "prettier": "^2.2.1",
-    "semantic-release": "^21.0.1",
-    "ts-jest": "^27.0.5",
-    "ts-node": "^10.2.1",
-    "typescript": "^4.2.4"
-  },
-  "release": {
-    "branches": [
-      "main"
+    "name": "fflt",
+    "version": "0.0.1",
+    "description": "Format, fix, lint, and typecheck.",
+    "files": [
+        "!lib/__tests__/**/*",
+        "lib/**/*",
+        "bin/**/*"
     ],
-    "plugins": [
-      [
-        "@semantic-release/release-notes-generator",
-        {
-          "preset": "conventionalcommits",
-          "presetConfig": {
-            "types": [
-              {
-                "type": "feat",
-                "section": "Features"
-              },
-              {
-                "type": "fix",
-                "section": "Bug Fixes"
-              },
-              {
-                "type": "build",
-                "section": "Dependencies and Other Build Updates",
-                "hidden": false
-              }
+    "bin": {
+        "fflt": "./bin/index.js"
+    },
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "build:watch": "tsc --watch",
+        "clean": "rm -rf ./lib/",
+        "cm": "cz",
+        "lint": "eslint ./src/ --fix",
+        "start": "TS_NODE_FILES=true ts-node ./src/cli.ts",
+        "semantic-release": "semantic-release",
+        "test:watch": "jest --watch",
+        "test": "jest",
+        "typecheck": "tsc --noEmit"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vantaboard/fflt.git"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Brighten Tompkins",
+        "email": "brightenqtompkins@gmail.com",
+        "url": "https://github.com/vantaboard"
+    },
+    "engines": {
+        "node": ">=16.0"
+    },
+    "keywords": [
+        "helper",
+        "formatting",
+        "fixing",
+        "linting",
+        "typechecking"
+    ],
+    "bugs": {
+        "url": "https://github.com/vantaboard/fflt/issues"
+    },
+    "homepage": "https://github.com/vantaboard/fflt#readme",
+    "devDependencies": {
+        "@types/cross-spawn": "^6.0.2",
+        "@types/jest": "^27.5.2",
+        "@types/node": "^20.4.5",
+        "@types/root-check": "^1.0.0",
+        "@types/tabtab": "^3.0.2",
+        "@typescript-eslint/eslint-plugin": "^4.22.0",
+        "@typescript-eslint/parser": "^4.22.0",
+        "eslint": "^7.25.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^3.4.0",
+        "jest": "^27.2.0",
+        "prettier": "^2.2.1",
+        "semantic-release": "^21.0.1",
+        "ts-jest": "^27.0.5",
+        "ts-node": "^10.2.1",
+        "typescript": "^4.2.4"
+    },
+    "release": {
+        "branches": [
+            "main"
+        ],
+        "plugins": [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            [
+                "@semantic-release/npm",
+                "@semantic-release/github",
+                {
+                    "assets": [
+                        {
+                            "path": "lib/**",
+                            "label": "JS library"
+                        },
+                        {
+                            "path": "bin",
+                            "label": "CLI"
+                        },
+                        {
+                            "path": "package.json",
+                            "label": "Package"
+                        },
+                        {
+                            "path": "README.md",
+                            "label": "Readme"
+                        },
+                        {
+                            "path": "LICENSE",
+                            "label": "License"
+                        }
+                    ]
+                }
             ]
-          }
-        }
-      ],
-      "@semantic-release/npm",
-      "@semantic-release/github"
-    ]
-  },
-  "dependencies": {
-    "@inquirer/core": "^3.1.0",
-    "@inquirer/prompts": "^3.0.1",
-    "@inquirer/type": "^1.1.1",
-    "ansi-escapes": "^6.2.0",
-    "chalk": "^5.3.0",
-    "commander": "^11.0.0",
-    "cosmiconfig": "^8.2.0",
-    "cross-spawn": "^7.0.3",
-    "figures": "^5.0.0",
-    "find-up": "^6.3.0",
-    "fzf": "^0.5.2",
-    "meow": "^12.0.1",
-    "npm-keyword": "^7.0.0",
-    "open": "^9.1.0",
-    "read-pkg-up": "^10.0.0",
-    "root-check": "^2.0.0",
-    "tabtab": "^3.0.2",
-    "ts-dedent": "^2.2.0",
-    "yaml": "^2.3.1"
-  }
+        ]
+    },
+    "dependencies": {
+        "@inquirer/core": "^3.1.0",
+        "@inquirer/prompts": "^3.0.1",
+        "@inquirer/type": "^1.1.1",
+        "ansi-escapes": "^6.2.0",
+        "chalk": "^5.3.0",
+        "commander": "^11.0.0",
+        "cosmiconfig": "^8.2.0",
+        "cross-spawn": "^7.0.3",
+        "figures": "^5.0.0",
+        "find-up": "^6.3.0",
+        "fzf": "^0.5.2",
+        "meow": "^12.0.1",
+        "npm-keyword": "^7.0.0",
+        "open": "^9.1.0",
+        "read-pkg-up": "^10.0.0",
+        "root-check": "^2.0.0",
+        "tabtab": "^3.0.2",
+        "ts-dedent": "^2.2.0",
+        "yaml": "^2.3.1"
+    }
 }
