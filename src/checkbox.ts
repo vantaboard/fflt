@@ -46,6 +46,12 @@ function isSelectableCheckboxChoice<T>(
     return choice != null && !Separator.isSeparator(choice) && !choice.disabled;
 }
 
+['SIGINT', 'SIGTERM', 'SIGQUIT', 'exit'].forEach(eventType => {
+    process.on(eventType, () => {
+        process.stdout.write(ansiEscapes.cursorShow);
+    });
+});
+
 export const checkbox = createPrompt(
     <Value extends unknown>(
         config: CheckboxConfig<Value>,
@@ -164,12 +170,6 @@ export const checkbox = createPrompt(
         });
 
         useKeypress((key, rl) => {
-            ['SIGINT', 'SIGTERM', 'SIGQUIT', 'exit'].forEach(eventType => {
-                process.on(eventType, () => {
-                    process.stdout.write(ansiEscapes.cursorShow);
-                });
-            });
-
             if (isSpaceKey(key) && !finding) {
                 try {
                     setChecked(

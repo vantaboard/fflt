@@ -66,6 +66,12 @@ function isSelectableSelectChoice<T>(
     return choice != null && !Separator.isSeparator(choice) && !choice.disabled;
 }
 
+['SIGINT', 'SIGTERM', 'SIGQUIT', 'exit'].forEach(eventType => {
+    process.on(eventType, () => {
+        process.stdout.write(ansiEscapes.cursorShow);
+    });
+});
+
 export const select = createPrompt(
     <Value extends string>(
         config: SelectConfig<Value>,
@@ -138,12 +144,6 @@ export const select = createPrompt(
         const choice = filteredChoices[cursorPosition] as SelectChoice<Value>;
 
         useKeypress((key, rl) => {
-            ['SIGINT', 'SIGTERM', 'SIGQUIT', 'exit'].forEach(eventType => {
-                process.on(eventType, () => {
-                    process.stdout.write(ansiEscapes.cursorShow);
-                });
-            });
-
             if (rl.line !== value) {
                 setValue(rl.line);
             }
