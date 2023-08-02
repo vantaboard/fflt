@@ -11,6 +11,9 @@
         "fflt": "./bin/index.js"
     },
     "type": "module",
+    "resolutions": {
+        "chalk": "^4.1.2"
+    },
     "scripts": {
         "build": "tsc",
         "build:watch": "tsc --watch",
