@@ -27,6 +27,9 @@ function isValidIgnorePattern(pattern: string): boolean {
 const explorer = cosmiconfigSync('fflt');
 const root = findUpSync('package.json');
 
+const defaultCommands = ['eslint', 'prettier', 'tsc'];
+const defaultScripts = ['lint', 'fix', 'format', 'tsc', 'typecheck'];
+
 interface FFLTConfig {
     commands: string[];
     scripts: string[];
@@ -37,8 +40,8 @@ interface FFLTConfig {
 }
 
 const defaultConfig = {
-    commands: ['eslint', 'prettier', 'tsc'],
-    scripts: ['lint', 'fix', 'format', 'tsc', 'typecheck'],
+    commands: [...defaultCommands],
+    scripts: [...defaultScripts],
     default_branch: 'main',
     ignore_pattern: 'yarn\\.lock|package-lock\\.json',
     include_cached: true,
