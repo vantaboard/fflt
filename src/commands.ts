@@ -1,27 +1,56 @@
 import chalk from 'chalk';
+import { SpawnSyncReturns } from 'child_process';
 import spawn from 'cross-spawn';
-import { SpawnSyncReturns } from 'node:child_process';
 import { FFLTConfig } from './config.js';
 import { error } from './errors.js';
 import { getBranches, getDiffFiles } from './git.js';
 import { select, SelectChoice } from './select.js';
 
-interface Command {
-    name: string;
-    run: (files: string[]) => SpawnSyncReturns<string>;
-    description: string;
-}
-
-type CommandMap = Record<string, Command[]>;
-
 class SpawnCommand {
     public exec: string;
     public args: string[];
+    public description?: string;
 
-    constructor(exec: string, args: string[]) {
+    constructor(exec: string, args: string[], description?: string) {
         this.exec = exec;
         this.args = args;
+        this.description = description;
     }
+
+    public readonly run = (): SpawnSyncReturns<string> => {
+        console.log(`${this} `);
+        const result = spawn.sync(this.exec, this.args, {
+            encoding: 'utf8',
+        });
+
+        if (result.error) {
+            throw result.error;
+        }
+
+        console.log(result.stdout);
+
+        return result;
+    };
+
+    public readonly addArg = (arg: string): SpawnCommand => {
+        this.args.push(arg);
+        return this;
+    };
+
+    public readonly addArgs = (args: string[]): SpawnCommand => {
+        this.args.push(...args);
+        return this;
+    };
+
+    public readonly removeArg = (arg: string): SpawnCommand => {
+        this.args = this.args.filter(a => a !== arg);
+        return this;
+    };
+
+    public readonly removeArgs = (args: string[]): SpawnCommand => {
+        this.args = this.args.filter(a => !args.includes(a));
+        return this;
+    };
 
     toString(): string {
         return `${chalk.magenta(this.exec)} ${this.args
@@ -32,97 +61,34 @@ class SpawnCommand {
     }
 }
 
-export const commandMap: CommandMap = {
-    eslint: [
-        {
-            run: (files: string[]) => {
-                const command = new SpawnCommand('eslint', [
-                    '--no-error-on-unmatched-pattern',
-                    ...files,
-                ]);
-
-                console.log(`${command} `);
-                const eslint = spawn.sync(command.exec, command.args, {
-                    encoding: 'utf8',
-                });
-
-                if (eslint.error) {
-                    throw eslint.error;
-                }
-
-                return eslint;
-            },
-            name: 'lint',
-            description: 'Lint files using selected Git branch',
-        },
-        {
-            run: (files: string[]) => {
-                const command = new SpawnCommand('eslint', [
-                    '--no-error-on-unmatched-pattern',
-                    '--fix',
-                    ...files,
-                ]);
-
-                console.log(`${command} `);
-                const eslint = spawn.sync(command.exec, command.args, {
-                    encoding: 'utf8',
-                });
-
-                if (eslint.error) {
-                    throw eslint.error;
-                }
-
-                return eslint;
-            },
-            name: 'fix',
-            description: 'Fix files using selected Git branch',
-        },
-    ],
-    prettier: [
-        {
-            run: (files: string[]) => {
-                const command = new SpawnCommand('prettier', [
-                    '--ignore-unknown',
-                    '--write',
-                    ...files,
-                ]);
-
-                console.log(`${command} `);
-                const prettier = spawn.sync(command.exec, command.args, {
-                    encoding: 'utf8',
-                });
-
-                if (prettier.error) {
-                    throw prettier.error;
-                }
-
-                return prettier;
-            },
-            name: 'format',
-            description: 'Format files using selected Git branch',
-        },
-    ],
-    tsc: [
-        {
-            run: () => {
-                const command = new SpawnCommand('tsc', ['--noEmit']);
-
-                console.log(`${command} `);
-                const tsc = spawn.sync('tsc', ['--noEmit'], {
-                    encoding: 'utf8',
-                });
-
-                if (tsc.error) {
-                    throw tsc.error;
-                }
-
-                return tsc;
-            },
-            name: 'typecheck',
-            description: 'Typecheck using selected Git branch',
-        },
-    ],
-} satisfies CommandMap;
+export const commands: Record<string, Record<string, SpawnCommand>> = {
+    eslint: {
+        lint: new SpawnCommand(
+            'eslint',
+            ['--no-error-on-unmatched-pattern'],
+            'Lint files using selected Git branch'
+        ),
+        fix: new SpawnCommand(
+            'eslint',
+            ['--no-error-on-unmatched-pattern', '--fix'],
+            'Fix files using selected Git branch'
+        ),
+    },
+    prettier: {
+        format: new SpawnCommand(
+            'prettier',
+            ['--ignore-unknown', '--write'],
+            'Format files using selected Git branch'
+        ),
+    },
+    tsc: {
+        typecheck: new SpawnCommand(
+            'tsc',
+            ['--noEmit'],
+            'Typecheck using selected Git branch'
+        ),
+    },
+};
 
 export async function handleCommands<TFlags extends Record<string, any>>(
     args: string[],
@@ -130,6 +96,7 @@ export async function handleCommands<TFlags extends Record<string, any>>(
     config: FFLTConfig
 ): Promise<void> {
     let [command, subcommand] = args;
+
     if (!config.commands.includes(command)) {
         command = await select({
             message: 'Which command do you want to run?',
@@ -137,36 +104,34 @@ export async function handleCommands<TFlags extends Record<string, any>>(
                 return {
                     name: command,
                     value: command,
-                    description: `Run ${command}`,
+                    description: `Run ${command} `,
                 };
             }),
         });
     }
 
-    const subcommands = commandMap[command];
+    const subcommands = commands[command];
 
-    subcommand = subcommand ?? subcommands[0].name;
+    subcommand = subcommand ?? Object.keys(subcommands)[0];
 
-    if (!args[2] && subcommands.length > 1) {
+    if (!args[2] && Object.keys(subcommands).length > 1) {
         subcommand = await select({
             message: 'Which subcommand do you want to run?',
-            choices: subcommands.map(command => {
-                const { name, description } = command;
-
-                return {
-                    name,
-                    value: name,
-                    description,
-                };
-            }),
+            choices: Object.entries(subcommands).map(
+                ([name, { description }]) => {
+                    return {
+                        name,
+                        value: name,
+                        description,
+                    };
+                }
+            ),
         });
     }
 
-    const subcommandRunner = [...subcommands].find(
-        command => command.name === subcommand
-    );
+    const spawnCommand = subcommands[subcommand];
 
-    if (!subcommandRunner) {
+    if (!spawnCommand) {
         error('subcommand', subcommand);
         process.exit(1);
     }
@@ -197,7 +162,7 @@ export async function handleCommands<TFlags extends Record<string, any>>(
                     acc.push({
                         name: branch,
                         value: branch,
-                        description: `Run ${subcommand} against ${branch}`,
+                        description: `Run ${subcommand} against ${branch} `,
                     });
 
                     return acc;
@@ -219,5 +184,5 @@ export async function handleCommands<TFlags extends Record<string, any>>(
         return;
     }
 
-    process.stdout.write(subcommandRunner.run(files).stdout);
+    spawnCommand.addArgs(files).run();
 }
