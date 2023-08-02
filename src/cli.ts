@@ -6,9 +6,12 @@ import { confirm } from '@inquirer/prompts';
 import yaml from 'yaml';
 import fs from 'fs';
 import path from 'path';
-import { select } from './select.js';
+import { select, SelectChoice } from './select.js';
 import { checkbox } from './checkbox.js';
-import spawn from 'cross-spawn';
+import { getBranches, getDiffFiles } from './git.js';
+import { commandMap } from './commands.js';
+import chalk from 'chalk';
+import { errors } from './errors.js';
 
 const pkgJson = readPackageUpSync({
     cwd: process.cwd(),
@@ -211,7 +214,7 @@ function getBranches() {
 
 async function handleInit() {
     if (!root) {
-        throw new Error('Could not find root. Root must have a package.json.');
+        throw errors.missingroot;
     }
 
     const confirmConfig =
@@ -343,7 +346,11 @@ const fftl = async (flags: typeof cli.flags, ...args: string[]) => {
         throw errors.ignore(flags.ignore);
     }
 
-    if (arg === 'init') {
+    if (flags.default && flags.branch) {
+        throw errors.defbranchflags;
+    }
+
+    if (args[0] === 'init') {
         await handleInit();
     }
 };
