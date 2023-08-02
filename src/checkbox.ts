@@ -12,7 +12,6 @@ import {
 } from '@inquirer/core';
 import type {} from '@inquirer/type';
 import chalk from 'chalk';
-import figures from 'figures';
 import ansiEscapes from 'ansi-escapes';
 import { extendedMatch, Fzf } from 'fzf';
 import { highlightChars } from './highlight.js';
@@ -154,10 +153,10 @@ export const checkbox = createPrompt(
                 }
 
                 const checkbox = checked[choice.index]
-                    ? chalk.green(figures.circleFilled)
-                    : chalk.gray(figures.circleFilled);
+                    ? chalk.green('◉')
+                    : chalk.gray('◉');
                 if (index === cursorPosition) {
-                    return chalk.cyan(`${figures.pointer} ${checkbox} ${line}`);
+                    return chalk.cyan(`❯ ${checkbox} ${line}`);
                 }
 
                 return `  ${checkbox} ${line}`;

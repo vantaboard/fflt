@@ -11,9 +11,8 @@ import {
     Separator,
     AsyncPromptConfig,
 } from '@inquirer/core';
-import type {} from '@inquirer/type';
+import type { } from '@inquirer/type';
 import chalk from 'chalk';
-import figures from 'figures';
 import ansiEscapes from 'ansi-escapes';
 import { extendedMatch, Fzf } from 'fzf';
 import zip from './zip.js';
@@ -211,9 +210,7 @@ export const select = createPrompt(
                 }
 
                 if (index === cursorPosition) {
-                    return `${figures.pointer} ${chalk[brightColor ?? 'cyan'](
-                        line
-                    )}`;
+                    return `❯ ${chalk[brightColor ?? 'cyan'](line)}`;
                 }
 
                 return `  ${line}`;
@@ -222,9 +219,9 @@ export const select = createPrompt(
 
         const windowedChoices = allChoices.length
             ? usePagination(allChoices, {
-                  active: cursorPosition,
-                  pageSize: config.pageSize,
-              })
+                active: cursorPosition,
+                pageSize: config.pageSize,
+            })
             : `  ${chalk.red('No matches found')}`;
 
         if (status === 'done') {
