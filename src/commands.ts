@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import spawn from 'cross-spawn';
 import { SpawnSyncReturns } from 'node:child_process';
 import { FFLTConfig } from './config.js';
-import { errors } from './errors.js';
+import { error } from './errors.js';
 import { getBranches, getDiffFiles } from './git.js';
 import { select, SelectChoice } from './select.js';
 
@@ -167,7 +167,7 @@ export async function handleCommands<TFlags extends Record<string, any>>(
     );
 
     if (!subcommandRunner) {
-        console.log(errors.subcommand(subcommand));
+        error('subcommand', subcommand);
         process.exit(1);
     }
 

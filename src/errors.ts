@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import dedent from 'ts-dedent';
 
-export const errors = {
+const errors = {
     ignore: (pattern: string): string => {
         return chalk.red(
             dedent`
@@ -20,7 +20,25 @@ export const errors = {
     subcommand: (subcommand: string): string => {
         return chalk.red(`Subcommand ${subcommand} does not exist.`);
     },
-    noselectable: chalk.red(
-        '[select prompt] No selectable choices. All choices are disabled.'
-    ),
+};
+
+type Errors = typeof errors;
+type Error<T extends keyof Errors> = Errors[T];
+
+type ErrorArgs<T extends keyof Errors> = Error<T> extends (
+    ...args: infer A
+) => string
+    ? A[number]
+    : never;
+
+export const error = <T extends keyof Errors>(
+    ...args: ErrorArgs<T> extends never ? [T] : [T, ErrorArgs<T>]
+): void => {
+    const err = errors[args[0]];
+
+    if (typeof err === 'function' && Array.isArray(args)) {
+        console.log(err(args as any));
+    }
+
+    console.log(err);
 };

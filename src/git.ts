@@ -1,9 +1,9 @@
 import spawn from 'cross-spawn';
 import path from 'node:path';
-import { errors } from './errors.js';
+import { error } from './errors';
 
 if (spawn.sync('git', ['--version']).error) {
-    console.log(errors.gitinstall);
+    error('gitinstall');
     process.exit(1);
 }
 

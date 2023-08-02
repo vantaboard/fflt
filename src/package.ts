@@ -1,11 +1,11 @@
 import { readPackageUpSync } from 'read-pkg-up';
 import { findUpSync } from 'find-up';
-import { errors } from './errors.js';
+import { error } from './errors';
 
 export const root = findUpSync('package.json') ?? '';
 
 if (!root || root === '') {
-    console.log(errors.missingroot);
+    error('missingroot');
     process.exit(1);
 }
 

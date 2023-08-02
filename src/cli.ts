@@ -1,5 +1,5 @@
 import meow from 'meow';
-import { errors } from './errors.js';
+import { error } from './errors.js';
 import { config, handleCreateConfig } from './config.js';
 import { handleCommands } from './commands.js';
 
@@ -74,12 +74,12 @@ void (async () => {
     }
 
     if (!isValidIgnorePattern(cli.flags.ignore)) {
-        console.log(errors.ignore(cli.flags.ignore));
+        error('ignore', cli.flags.ignore);
         process.exit(1);
     }
 
     if (cli.flags.default && cli.flags.branch !== undefined) {
-        console.log(errors.defbranchflags);
+        error('defbranchflags');
         process.exit(1);
     }
 
