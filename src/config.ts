@@ -8,7 +8,7 @@ import { checkbox } from './checkbox.js';
 import { getBranches } from './git.js';
 import fs from 'fs';
 import path from 'path';
-import { extensions, stringifiers } from './utilities.js';
+import { extensions, notExistsOrStrArr, stringifiers } from './utilities.js';
 
 const root = findUpSync('package.json');
 
@@ -54,18 +54,6 @@ const depCommandMap = {
     prettier: 'prettier',
     tsc: 'typescript',
 };
-
-function isArrayOfStrings(array: unknown) {
-    return (
-        Array.isArray(array) &&
-        (!array.length ||
-            (array.length > 0 && array.every(str => typeof str === 'string')))
-    );
-}
-
-function notExistsOrStrArr(value: unknown) {
-    return !value || (value && isArrayOfStrings(value));
-}
 
 const explorerResult = explorer.search();
 
