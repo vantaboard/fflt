@@ -316,7 +316,7 @@ async function handleInit() {
 
 const fftl = async (flags: typeof cli.flags, ...args: string[]) => {
     if (!args.length) {
-        process.stdout.write(cli.showHelp());
+        console.log(cli.showHelp());
         return;
     }
 
@@ -416,7 +416,7 @@ const fftl = async (flags: typeof cli.flags, ...args: string[]) => {
         });
 
         if (!files.length) {
-            process.stdout.write(
+            console.warn(
                 chalk.yellow(`No files to run ${chalk.magenta(command)} on.`)
             );
             return;

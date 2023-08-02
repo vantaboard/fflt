@@ -37,7 +37,7 @@ export const commandMap: CommandMap = {
                     ...files,
                 ]);
 
-                process.stdout.write(`${command} `);
+                console.log(`${command} `);
                 const eslint = spawn.sync(command.exec, command.args, {
                     encoding: 'utf8',
                 });
@@ -59,7 +59,7 @@ export const commandMap: CommandMap = {
                     ...files,
                 ]);
 
-                process.stdout.write(`${command} `);
+                console.log(`${command} `);
                 const eslint = spawn.sync(command.exec, command.args, {
                     encoding: 'utf8',
                 });
@@ -83,7 +83,7 @@ export const commandMap: CommandMap = {
                     ...files,
                 ]);
 
-                process.stdout.write(`${command} `);
+                console.log(`${command} `);
                 const prettier = spawn.sync(command.exec, command.args, {
                     encoding: 'utf8',
                 });
@@ -103,7 +103,7 @@ export const commandMap: CommandMap = {
             run: () => {
                 const command = new SpawnCommand('tsc', ['--noEmit']);
 
-                process.stdout.write(`${command} `);
+                console.log(`${command} `);
                 const tsc = spawn.sync('tsc', ['--noEmit'], {
                     encoding: 'utf8',
                 });
