@@ -3,7 +3,6 @@
     "version": "0.0.3",
     "description": "Format, fix, lint, and typecheck.",
     "files": [
-        "!lib/__tests__/**/*",
         "lib/**/*",
         "bin/**/*"
     ],
@@ -18,12 +17,7 @@
         "build": "tsc",
         "build:watch": "tsc --watch",
         "clean": "rm -rf ./lib/",
-        "cm": "cz",
         "lint": "eslint ./src/ --fix",
-        "start": "TS_NODE_FILES=true ts-node ./src/cli.ts",
-        "semantic-release": "semantic-release",
-        "test:watch": "jest --watch",
-        "test": "jest",
         "typecheck": "tsc --noEmit"
     },
     "repository": {
@@ -62,41 +56,6 @@
         "prettier": "^2.2.1",
         "semantic-release": "^21.0.1",
         "typescript": "^4.2.4"
-    },
-    "release": {
-        "branches": [
-            "main"
-        ],
-        "plugins": [
-            "@semantic-release/commit-analyzer",
-            "@semantic-release/release-notes-generator",
-            "@semantic-release/npm",
-            "@semantic-release/github",
-            {
-                "assets": [
-                    {
-                        "path": "lib/**",
-                        "label": "JS library"
-                    },
-                    {
-                        "path": "bin",
-                        "label": "CLI"
-                    },
-                    {
-                        "path": "package.json",
-                        "label": "Package"
-                    },
-                    {
-                        "path": "README.md",
-                        "label": "Readme"
-                    },
-                    {
-                        "path": "LICENSE",
-                        "label": "License"
-                    }
-                ]
-            }
-        ]
     },
     "dependencies": {
         "@inquirer/confirm": "^2.0.7",
