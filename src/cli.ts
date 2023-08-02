@@ -56,19 +56,6 @@ const cli = meow(
 );
 
 const fftl = async (flags: typeof cli.flags, ...args: string[]) => {
-    if (!args.length) {
-        console.log(cli.showHelp());
-        return;
-    }
-
-    if (!isValidIgnorePattern(flags.ignore)) {
-        throw errors.ignore(flags.ignore);
-    }
-
-    if (flags.default && flags.branch) {
-        throw errors.defbranchflags;
-    }
-
     const [base] = args;
 
     if (base === 'init') {
@@ -81,5 +68,20 @@ const fftl = async (flags: typeof cli.flags, ...args: string[]) => {
 };
 
 void (async () => {
+    if (!cli.input.length) {
+        console.log(cli.showHelp());
+        return 0;
+    }
+
+    if (!isValidIgnorePattern(cli.flags.ignore)) {
+        console.log(errors.ignore(cli.flags.ignore));
+        process.exit(1);
+    }
+
+    if (cli.flags.default && cli.flags.branch !== undefined) {
+        console.log(errors.defbranchflags);
+        process.exit(1);
+    }
+
     await fftl(cli.flags, ...cli.input);
 })();

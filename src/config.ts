@@ -1,7 +1,4 @@
-import { readPackageUpSync } from 'read-pkg-up';
 import { cosmiconfigSync } from 'cosmiconfig';
-import { errors } from './errors';
-import { findUpSync } from 'find-up';
 import { confirm } from '@inquirer/prompts';
 import { select } from './select.js';
 import { checkbox } from './checkbox.js';
@@ -9,12 +6,7 @@ import { getBranches } from './git.js';
 import fs from 'fs';
 import path from 'path';
 import { extensions, notExistsOrStrArr, stringifiers } from './utilities.js';
-
-const root = findUpSync('package.json');
-
-const pkgJson = readPackageUpSync({
-    cwd: process.cwd(),
-})?.packageJson;
+import { pkgJson, root } from './package.js';
 
 const explorer = cosmiconfigSync('fflt');
 const defaultCommands = ['eslint', 'prettier', 'tsc'];
@@ -103,10 +95,6 @@ export const config = getConfig(explorerResult?.config);
 export const configExists = Boolean(explorerResult);
 
 export async function handleCreateConfig(): Promise<void> {
-    if (!root) {
-        throw errors.missingroot;
-    }
-
     const confirmConfig =
         !configExists &&
         (await confirm({

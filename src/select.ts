@@ -134,7 +134,7 @@ export const select = createPrompt(
                 isSelectableSelectChoice
             );
             if (startIndex < 0) {
-                throw errors.noselectable;
+                throw new Error(errors.noselectable);
             }
 
             return startIndex;

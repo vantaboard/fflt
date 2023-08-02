@@ -167,7 +167,8 @@ export async function handleCommands<TFlags extends Record<string, any>>(
     );
 
     if (!subcommandRunner) {
-        throw errors.subcommand(subcommand);
+        console.log(errors.subcommand(subcommand));
+        process.exit(1);
     }
 
     let branch = config.default_branch;

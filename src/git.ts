@@ -3,7 +3,8 @@ import path from 'node:path';
 import { errors } from './errors.js';
 
 if (spawn.sync('git', ['--version']).error) {
-    throw errors.gitinstall;
+    console.log(errors.gitinstall);
+    process.exit(1);
 }
 
 export function getBranches(): string[] {
