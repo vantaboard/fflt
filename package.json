@@ -73,34 +73,32 @@
         "plugins": [
             "@semantic-release/commit-analyzer",
             "@semantic-release/release-notes-generator",
-            [
-                "@semantic-release/npm",
-                "@semantic-release/github",
-                {
-                    "assets": [
-                        {
-                            "path": "lib/**",
-                            "label": "JS library"
-                        },
-                        {
-                            "path": "bin",
-                            "label": "CLI"
-                        },
-                        {
-                            "path": "package.json",
-                            "label": "Package"
-                        },
-                        {
-                            "path": "README.md",
-                            "label": "Readme"
-                        },
-                        {
-                            "path": "LICENSE",
-                            "label": "License"
-                        }
-                    ]
-                }
-            ]
+            "@semantic-release/npm",
+            "@semantic-release/github",
+            {
+                "assets": [
+                    {
+                        "path": "lib/**",
+                        "label": "JS library"
+                    },
+                    {
+                        "path": "bin",
+                        "label": "CLI"
+                    },
+                    {
+                        "path": "package.json",
+                        "label": "Package"
+                    },
+                    {
+                        "path": "README.md",
+                        "label": "Readme"
+                    },
+                    {
+                        "path": "LICENSE",
+                        "label": "License"
+                    }
+                ]
+            }
         ]
     },
     "dependencies": {
