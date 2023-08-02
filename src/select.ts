@@ -12,7 +12,7 @@ import {
     AsyncPromptConfig,
 } from '@inquirer/core';
 import type {} from '@inquirer/type';
-import chalk, { ChalkInstance } from 'chalk';
+import chalk from 'chalk';
 import figures from 'figures';
 import ansiEscapes from 'ansi-escapes';
 import { extendedMatch, Fzf } from 'fzf';
@@ -25,7 +25,7 @@ export type FZFSelectChoice<Value> = Pick<
 >;
 
 type BrightColors = keyof Pick<
-    ChalkInstance,
+    typeof chalk,
     | 'blackBright'
     | 'redBright'
     | 'greenBright'
@@ -41,7 +41,7 @@ export type SelectChoice<Value> = {
     name?: string;
     description?: string;
     color?: keyof Pick<
-        ChalkInstance,
+        typeof chalk,
         | 'black'
         | 'red'
         | 'green'

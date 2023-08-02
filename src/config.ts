@@ -1,5 +1,5 @@
 import { cosmiconfigSync } from 'cosmiconfig';
-import { confirm } from '@inquirer/prompts';
+import confirm from '@inquirer/confirm';
 import { select } from './select.js';
 import { checkbox } from './checkbox.js';
 import { getBranches } from './git.js';
