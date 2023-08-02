@@ -110,10 +110,38 @@ const cli = meow(
 
 	Options
 	  --version, -v  Show version
+      --cached, -c   Include cached files
+      --default, -d  Use default branch
+      --branch, -b   Name of branch to use
+      --root, -r     Use git root
+      --ignore, -i   Ignore pattern (regex)
 `,
     {
         importMeta: import.meta,
-        flags: {},
+        flags: {
+            cached: {
+                type: 'boolean',
+                shortFlag: 'c',
+                default: config.include_cached,
+            },
+            default: {
+                type: 'boolean',
+                shortFlag: 'd',
+            },
+            branch: {
+                type: 'string',
+                shortFlag: 'b',
+            },
+            root: {
+                type: 'boolean',
+                shortFlag: 'r',
+            },
+            ignore: {
+                type: 'string',
+                shortFlag: 'i',
+                default: config.ignore_pattern,
+            },
+        },
     }
 );
 
@@ -296,8 +324,9 @@ async function handleInit() {
     }
 }
 
-const fftl = async (arg: string) => {
-    if (!arg) {
+const fftl = async (flags: typeof cli.flags, ...args: string[]) => {
+    if (!args.length) {
+        process.stdout.write(cli.showHelp());
         return;
     }
 
@@ -307,5 +336,5 @@ const fftl = async (arg: string) => {
 };
 
 void (async () => {
-    await fftl(cli.input[0]);
+    await fftl(cli.flags, ...cli.input);
 })();
