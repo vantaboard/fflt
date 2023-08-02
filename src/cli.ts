@@ -216,17 +216,17 @@ async function handleInit() {
                 {
                     name: 'JavaScript',
                     value: 'js',
-                    description: 'Create a JavaScript config file',
+                    description: 'Create a JavaScript config file (.js)',
                 },
                 {
                     name: 'JavaScript (Module)',
                     value: 'mjs',
-                    description: 'Create a JavaScript config file',
+                    description: 'Create a JavaScript config file (.mjs)',
                 },
                 {
                     name: 'JavaScript (Common)',
                     value: 'cjs',
-                    description: 'Create a JavaScript config file',
+                    description: 'Create a JavaScript config file (.cjs)',
                 },
             ],
         }));
@@ -267,8 +267,8 @@ async function handleInit() {
 
     const includeCached = confirmConfig
         ? await confirm({
-            message: 'Do you want to include staged files?',
-        })
+              message: 'Do you want to include staged files?',
+          })
         : undefined;
 
     const scripts =
@@ -276,12 +276,15 @@ async function handleInit() {
         (await checkbox({
             message: 'Which scripts do you want to run?',
             choices: Object.entries(pkgJson?.scripts || {}).map(
-                ([name, script]) => ({
-                    name,
-                    value: name,
-                    checked: config.scripts.includes(name),
-                    description: script,
-                })
+                ([name, script]) => {
+                    return {
+                        name,
+                        value: name,
+                        checked: config.scripts.includes(name),
+                        description: script,
+                    };
+                },
+                []
             ),
         }));
 
