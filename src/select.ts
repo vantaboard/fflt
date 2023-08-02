@@ -116,6 +116,12 @@ export const select = createPrompt(
         const choice = filteredChoices[cursorPosition] as SelectChoice<Value>;
 
         useKeypress((key, rl) => {
+            ['SIGINT', 'SIGTERM', 'SIGQUIT', 'exit'].forEach(eventType => {
+                process.on(eventType, () => {
+                    process.stdout.write(ansiEscapes.cursorShow);
+                });
+            });
+
             if (rl.line !== value) {
                 setValue(rl.line);
             }

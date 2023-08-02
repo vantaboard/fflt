@@ -164,6 +164,12 @@ export const checkbox = createPrompt(
         });
 
         useKeypress((key, rl) => {
+            ['SIGINT', 'SIGTERM', 'SIGQUIT', 'exit'].forEach(eventType => {
+                process.on(eventType, () => {
+                    process.stdout.write(ansiEscapes.cursorShow);
+                });
+            });
+
             if (isSpaceKey(key) && !finding) {
                 try {
                     setChecked(
