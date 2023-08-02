@@ -20,11 +20,11 @@ const cli = meow(
 
 	Options
 	  --version, -v  Show version
-      --cached, -c   Include cached files
+      --cached,  -c  Include cached files
       --default, -d  Use default branch
-      --branch, -b   Name of branch to use
-      --root, -r     Use git root
-      --ignore, -i   Ignore pattern (regex)
+      --branch,  -b  Name of branch to use
+      --root,    -r  Use git root
+      --ignore,  -i  Ignore pattern (regex)
       --verbose, -v  Verbose output
 `,
     {
