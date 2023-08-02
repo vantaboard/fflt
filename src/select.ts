@@ -18,6 +18,7 @@ import ansiEscapes from 'ansi-escapes';
 import { extendedMatch, Fzf } from 'fzf';
 import zip from './zip.js';
 import { highlightChars } from './highlight.js';
+import { errors } from './errors.js';
 
 export type FZFSelectChoice<Value> = Pick<
     SelectChoice<Value>,
@@ -133,9 +134,7 @@ export const select = createPrompt(
                 isSelectableSelectChoice
             );
             if (startIndex < 0) {
-                throw new Error(
-                    '[select prompt] No selectable choices. All choices are disabled.'
-                );
+                throw errors.noselectable;
             }
 
             return startIndex;
