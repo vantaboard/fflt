@@ -281,7 +281,7 @@ export const checkbox = createPrompt(
 
         const choiceDescription =
             choice?.description && filteredChoices.length
-                ? `\n${choice.description}`
+                ? chalk.blue(`\n${choice.description}`)
                 : '';
 
         return `${prefix} ${message}${

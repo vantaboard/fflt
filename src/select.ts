@@ -12,7 +12,7 @@ import {
     AsyncPromptConfig,
 } from '@inquirer/core';
 import type {} from '@inquirer/type';
-import chalk from 'chalk';
+import chalk, { ChalkInstance } from 'chalk';
 import figures from 'figures';
 import ansiEscapes from 'ansi-escapes';
 import { extendedMatch, Fzf } from 'fzf';
@@ -24,10 +24,33 @@ export type FZFSelectChoice<Value> = Pick<
     'value' | 'name'
 >;
 
+type BrightColors = keyof Pick<
+    ChalkInstance,
+    | 'blackBright'
+    | 'redBright'
+    | 'greenBright'
+    | 'yellowBright'
+    | 'blueBright'
+    | 'magentaBright'
+    | 'cyanBright'
+    | 'whiteBright'
+>;
+
 export type SelectChoice<Value> = {
     value: Value;
     name?: string;
     description?: string;
+    color?: keyof Pick<
+        ChalkInstance,
+        | 'black'
+        | 'red'
+        | 'green'
+        | 'yellow'
+        | 'blue'
+        | 'magenta'
+        | 'cyan'
+        | 'white'
+    >;
     disabled?: boolean | string;
     type?: never;
 };
@@ -165,10 +188,19 @@ export const select = createPrompt(
                     return ` ${choice.separator}`;
                 }
 
-                const line = highlightChars(
-                    (entry.item.name || entry.item.value).normalize(),
-                    entry.positions
-                );
+                const color = choice.color;
+                const brightColor =
+                    color && color + 'Bright' in chalk
+                        ? ((color + 'Bright') as BrightColors)
+                        : undefined;
+
+                const unhighlightedLine = (
+                    choice.name || choice.value
+                ).normalize();
+                const maybeColoredLine = color
+                    ? chalk[color](unhighlightedLine)
+                    : unhighlightedLine;
+                const line = highlightChars(maybeColoredLine, entry.positions);
 
                 if (choice.disabled) {
                     const disabledLabel =
@@ -179,7 +211,9 @@ export const select = createPrompt(
                 }
 
                 if (index === cursorPosition) {
-                    return chalk.cyan(`${figures.pointer} ${line}`);
+                    return `${figures.pointer} ${chalk[brightColor ?? 'cyan'](
+                        line
+                    )}`;
                 }
 
                 return `  ${line}`;
@@ -201,7 +235,7 @@ export const select = createPrompt(
 
         const choiceDescription =
             choice?.description && filteredChoices.length
-                ? `\n${choice.description}`
+                ? chalk.blue(`\n${choice.description}`)
                 : '';
 
         return `${prefix} ${message} ${value}\n${windowedChoices}${choiceDescription}${ansiEscapes.cursorHide}`;
